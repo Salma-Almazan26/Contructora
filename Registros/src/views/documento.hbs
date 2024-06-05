@@ -1,0 +1,111 @@
+<style>
+    /* Estilos para ocultar los botones al imprimir */
+    @media print {
+        /* Agrega aquí los selectores de los botones que deseas ocultar */
+        #printButton {
+            display: none;
+        }
+         #editar {
+            display: none;
+        }
+        #back{
+            display: none;
+        }
+        /* Puedes agregar más reglas para ocultar otros elementos que no desees imprimir */
+    }
+</style>
+
+<!-- Puedes mostrar los detalles del documento aquí -->
+<div class="center d-flex justify-content-between align-items-center">
+<a href="dashboard"><button id="back" class="btn btn-outline-primary"> &lt; </button></a>
+
+<h2 class="text-center center">{{documento.obra}}</h2>
+
+<a href="/editar/{{documentoId}}">
+<button id="editar" class="btn btn-outline-primary lado">Editar</button></a>
+<button id="printButton" class="btn btn-primary">Imprimir</button>
+
+</div>
+
+<table class="bottom">
+    <tr class="bold table-active">
+        <td colspan="2"><h5>Empresa</h5></td>
+   </tr>
+    <tr>
+        <td style="width: 50%;">Nombre: {{documento.empresa}}</td>
+        <td style="width: 50%;">RFC: {{documento.rfcEmpresa}}</td>
+    </tr>
+</table>
+
+<h4 class="text-center center bottom">Datos de la obra</h4>
+
+<table class="bottom">
+    <tr>
+        <td class="table-active" style="width: 35%;">Dirección</td>
+        <td style="width: 65%;">{{documento.direccion}}</td>
+    </tr>
+    <tr>
+        <td class="table-active" style="width: 35%;">Numero de obra</td>
+        <td style="width: 65%;">{{documento.noObra}}</td>
+    </tr>
+    <tr>
+        <td class="table-active" style="width: 35%;">Numero de contrato</td>
+        <td style="width: 65%;">{{documento.noContrato}}</td>
+    </tr>
+    <tr>
+        <td class="table-active" style="width: 35%;">Fecha de iniciación</td>
+        <td style="width: 65%;">{{documento.fechaIniciacion}}</td>
+    </tr>
+    <tr>
+        <td class="table-active" style="width: 35%;">Fecha de finalización</td>
+        <td style="width: 65%;">{{documento.fechaFinalizacion}}</td>
+    </tr>
+    <tr>
+        <td class="table-active" style="width: 35%;">Institución o Contratista</td>
+        <td style="width: 65%;">{{documento.contratista}}</td>
+    </tr>
+    <tr>
+        <td class="table-active" style="width: 35%;">Dirección del contratista</td>
+        <td style="width: 65%;">{{documento.direccionContratista}}</td>
+    </tr>
+    <tr>
+        <td class="table-active" style="width: 35%;">Número del contratista</td>
+        <td style="width: 65%;">{{documento.telefonoContratista}}</td>
+    </tr>
+</table>
+
+<table>
+    <tr class="table-active">
+        <th>N°</th>
+        <th>Descripcion</th>
+        <th>Unidad</th>
+        <th>Cantidad</th>
+        <th>P.Unitario</th>
+        <th>Total</th>
+    </tr>
+    
+        {{#each documento.tabla}}
+        <tr>
+            {{#if no}}
+            <td>{{this.no}}</td>
+            <td>{{this.descripcion}}</td>
+            <td>{{this.unidad}}</td>
+            <td>{{this.cantidad}}</td>
+            <td>{{this.precioUnitario}}</td>
+            <td>{{this.total}}</td>
+            {{/if}}
+            {{#unless no}} <!-- Si no existe el campo 'no', mostrar 'nombre' -->
+            <td colspan="7">{{this.encabezado}}</td>
+            {{/unless}}
+            
+        </tr>
+        {{/each}}
+</table>
+
+<script>
+    document.getElementById('printButton').addEventListener('click', function() {
+        window.print();
+    });
+</script>
+
+

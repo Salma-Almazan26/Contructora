@@ -1,0 +1,29 @@
+{
+    "users":{
+        "lisa@gmail.com":{
+            "documento1":{
+                "empresa": "hola",
+                "dueño": "lisa",
+                "bitacora":{
+                    "1":{
+                        "n": 1,
+                        "desc": "hola",
+                        "cant": 1
+                    },
+                    "2":{
+                        "n": 1,
+                        "desc": "hola",
+                        "cant": 1
+                    },
+                    "3":{
+                        "n": 1,
+                        "desc": "hola",
+                        "cant": 1
+                    }
+                }
+            }
+
+        }
+
+    }
+}

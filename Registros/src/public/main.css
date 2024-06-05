@@ -1,0 +1,49 @@
+body{
+    background: #DAD2D2;
+}
+.center{
+    width: 100%;
+}
+.center2{
+    width: 50%;
+}   
+
+.form-color{
+    background: #EDEAEA;
+}
+.btn2{
+    border-radius: 30px;
+}
+table{
+    width: 100%;
+}
+th, td {
+    border: 1px solid;
+    padding: 3px;
+    text-align: center;
+}
+th.full-width {
+    width: 100%;
+}
+.lado{
+    float: right;
+    margin-right: 15px;
+}
+.txt{
+    text-align: left;
+    padding-left: 15px;
+}
+h2{
+    padding-bottom: 20px;
+}
+.espacios{
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espacio vertical entre elementos */
+}
+.bottom{
+    margin-bottom: 20px;
+}
+.fondo{
+    background-color: #4D5A9A;
+}

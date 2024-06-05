@@ -1,0 +1,1 @@
+$env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\SalmaAlmazanBarajas\Documents\9noSemestre\Residencias\Registros\constructora-f1b33-firebase-adminsdk-cjf8x-996d3faa6c.json"

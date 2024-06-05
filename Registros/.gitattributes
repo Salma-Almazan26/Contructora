@@ -1,0 +1,6 @@
+# Normaliza los finales de línea para todos los archivos de texto
+* text=auto
+
+# Especifica finales de línea LF para archivos JavaScript y Markdown
+*.js text eol=lf
+*.md text eol=lf

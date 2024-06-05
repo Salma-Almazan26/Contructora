@@ -1,0 +1,188 @@
+<div class="col-md-6 offset-md-3 text-center">
+    <h1>Editar Documento</h1>
+    <legend>Bitácora de obra</legend>
+</div>
+
+<div class="center text-center card-footer form-color">
+       <form action="/actualizar-datos" method="POST" class="form-color">
+        
+        <!-- Agrega un campo oculto para almacenar el ID del documento -->
+        <input type="hidden" name="documentoId" value="{{documentoId}}">
+        
+        <label for="titulo">Nombre de la empresa</label>
+        <input type="text" name="title" placeholder="" class="form-control" value="{{documento.empresa}}">
+        <label for="rfc">RFC</label>
+        <input type="text" name="rfc" placeholder="" class="form-control" value="{{documento.rfcEmpresa}}">
+
+        <br>
+        <legend>Datos de la obra</legend>
+        <label for="obratitulo">Nombre de la obra</label>
+        <input type="text" name="nombreObra" placeholder="" class="form-control" value="{{documento.obra}}">
+        <label for="direccion">Dirección</label>
+        <input type="text" name="direccionObra" placeholder="" class="form-control" value="{{documento.direccion}}">
+        <label for="nocontrato">Número de contrato</label>
+        <input type="number" name="numeroContrato" placeholder="" class="form-control" value="{{documento.noContrato}}">
+        <label for="noobra">Número de obra</label>
+        <input type="number" name="numeroObra" placeholder="" class="form-control" value="{{documento.noObra}}">
+         <label for="fecha">Fecha de iniciación</label>
+        <input type="date" name="fechaIniciacion" placeholder="" class="form-control" value="{{documento.fechaIniciacion}}">
+
+        <label for="fecha">Fecha de finalización</label>
+        <input type="date" name="fechaFinalizacion" placeholder="" class="form-control" value="{{documento.fechaFinalizacion}}">
+
+        <!-- Campos para el contratista -->
+        <label for="nombrecontra">Nombre o institución del contratista</label>
+        <input type="text" name="nombreContratista" placeholder="" class="form-control" value="{{documento.contratista}}">
+        <label for="nodocumento">Número de Documento del contratista</label>
+        <input type="text" name="numeroDocumentoContratista" placeholder="" class="form-control" value="{{documento.noDocumento}}">
+        <label for="direccioncontra">Dirección del contratista</label>
+        <input type="text" name="direccionContratista" placeholder="" class="form-control" value="{{documento.direccion}}">
+        <label for="telefono">Teléfono del contratista</label>
+        <input type="number" name="telefonoContratista" placeholder="" class="form-control" value="{{documento.telefonoContratista}}">
+        <br>
+        <br>
+
+    <br>  
+    
+    <table class="" id="miTabla">
+    <tr class="table-active">
+        <th>N°</th>
+        <th>Descripcion</th>
+        <th>Unidad</th>
+        <th>Cantidad</th>
+        <th>P.Unitario</th>
+        <th>Total</th>
+    </tr>
+    
+    {{#each documento.tabla}}
+    <tr>
+        {{#if no}}
+        <td><input class="form-control" type="text" name="tabla[{{@index}}][no]" value="{{this.no}}"></td>
+        <td><input class="form-control" type="text" name="tabla[{{@index}}][descripcion]" value="{{this.descripcion}}"></td>
+        <td><input class="form-control" type="text" name="tabla[{{@index}}][unidad]" value="{{this.unidad}}"></td>
+        <td><input class="form-control" type="text" name="tabla[{{@index}}][cantidad]" value="{{this.cantidad}}"></td>
+        <td><input class="form-control" type="text" name="tabla[{{@index}}][precioUnitario]" value="{{this.precioUnitario}}"></td>
+        <td><input class="form-control" type="text" name="tabla[{{@index}}][total]" value="{{this.total}}"></td>
+        {{/if}}
+        {{#unless no}} <!-- Si no existe el campo 'no', mostrar 'nombre' -->
+        <td colspan="6"><input class="form-control" type="text" name="tabla[{{@index}}][encabezado]" value="{{this.encabezado}}"></td>
+        {{/unless}}
+    </tr>
+    {{/each}}
+</table>
+<br>
+
+        <button type="button" onclick="agregarFila(event)" class="btn btn-dark">Agregar Fila</button>
+        <button type="button" onclick="agregarEncabezado(event)" class="btn btn-dark">Agregar Encabezado</button>
+<br>
+<br>
+
+    <button class="btn btn2 btn-primary btn-block">Guardar</button>
+      
+    </form>
+</div>
+
+<script>
+    // Declara encabezados como un array al inicio
+    var encabezados = [];
+    // Inicializa el contador global basado en el número de filas existentes en la tabla
+    contadorGlobal = document.getElementById("miTabla").rows.length;
+
+    function agregarFila(event) {
+        event.preventDefault(); // Evitar que el formulario se envíe
+    var table = document.getElementById("miTabla");
+    var newRow = table.tBodies[0].insertRow(-1);
+
+    // Obtén el encabezado seleccionado (puede ser el último agregado)
+    var encabezadoSeleccionado = encabezados.length > 0 ? encabezados[encabezados.length - 1] : { nombre: "" };
+
+    // Nombres específicos para cada tipo de campo
+    var nombresCampos = ["no", "descripcion", "unidad", "cantidad", "precio", "total"];
+
+    for (var i = 0; i < table.rows[0].cells.length; i++) {
+        var cell = newRow.insertCell(i);
+        var input = document.createElement("input");
+        input.type = "text";
+
+        input.name = `tabla[${contadorGlobal}][${nombresCampos[i]}]`;
+        // Asigna nombres únicos a los campos
+        // Ajusta la construcción de nombres de campos en el cliente
+        //input.name = `${nombresCampos[i]}_${contadorGlobal}`;
+
+        // Agregar la clase form-control al input
+        input.classList.add("form-control");
+
+        // Agregar un evento de cambio al campo de cantidad y precio unitario
+        if (i === 3 || i === 4) {
+            input.addEventListener("input", function () {
+                calcularTotal(newRow);
+            });
+        }
+
+        cell.appendChild(input);
+    }
+
+    // Actualizar el valor de numFilas
+    document.getElementById('numFilas').value = table.rows.length - 1;
+
+    // Añade esta función para calcular el total en las filas fijas
+    function calcularTotalFijo(input) {
+        var fila = input.parentNode.parentNode;
+        var cantidad = parseFloat(fila.cells[3].querySelector("input").value) || 0;
+        var precioUnitario = parseFloat(fila.cells[4].querySelector("input").value) || 0;
+        var total = cantidad * precioUnitario;
+
+        fila.cells[5].querySelector("input").value = total.toFixed(2);
+    }
+
+    // Crear la celda para el total y asignar una clase para identificarla fácilmente
+    var totalCell = newRow.cells[table.rows[0].cells.length - 1];
+    totalCell.classList.add("total-cell");
+
+    // Calcular el total y mostrarlo en la celda correspondiente
+    calcularTotal(newRow);
+
+    // Incrementar el contador global
+    contadorGlobal++;
+    }
+
+    function calcularTotal(row) {
+        // Obtener los valores de cantidad y precio unitario de la fila
+        var cantidad = parseFloat(row.cells[3].querySelector("input").value) || 0;
+        var precioUnitario = parseFloat(row.cells[4].querySelector("input").value) || 0;
+
+        // Calcular el total y mostrarlo en la celda correspondiente
+        var total = cantidad * precioUnitario;
+        row.cells[row.cells.length - 1].querySelector("input").value = total.toFixed(2);
+
+    }
+
+    function agregarEncabezado(event) {
+        event.preventDefault(); // Evitar que el formulario se envíe
+    var table = document.getElementById("miTabla");
+    var newRow = table.tBodies[0].insertRow(-1);
+
+    // Crear una celda que ocupe el ancho de las 6 columnas
+    var cell = newRow.insertCell();
+    cell.colSpan = 6; // Establecer el colspan en 6 para que ocupe todas las columnas
+
+    // Crear un input dentro de la celda
+    var input = document.createElement("input");
+    input.type = "text";
+    input.name = `tabla[${contadorGlobal}][encabezado]`;
+    console.log(input.name);
+
+    // Añadir el input a la celda
+    cell.appendChild(input);
+    // Agregar la clase form-control al input
+    input.classList.add("form-control");
+
+    const index = tablaData.length;
+    tablaData[index] = { encabezado: input.value };
+
+
+    // Incrementar el contador global
+    contadorGlobal++;
+    }
+</script>
+

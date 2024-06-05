@@ -1,0 +1,35 @@
+
+<div class="col-md-6 offset-md-3">
+    <div class="card">
+        <div class="card-header text-center form-color">
+            <h1>Iniciar Sesion</h1>
+        </div>
+
+        <div class="card-footer form-color">
+            <br>
+            <!-- Renderizar el mensaje de error si existe -->
+            {{#if error}}
+                <script>
+                    alert("{{error}}");
+                </script>
+            {{/if}}
+
+            <form action="/dashboard" method="POST" class="form-color">
+                <div class="form-group">
+                    <label for="email">Correo electronico</label>
+                    <input type="email" name="email" placeholder="Correo electronico" class="form-control">
+                    <br>
+                    <label for="pass">Contraseña</label>
+                    <input type="password" name="password" placeholder="Contraseña" class="form-control">
+                    <br>
+                </div>
+                  <button class="btn btn2 btn-primary btn-block">Ingresar</button>
+                <hr>
+                <div>
+                    <a href="/registro" class="btn btn2 btn-secondary btn-block">Registrar</a>
+                </div>
+               
+            </form>
+        </div>
+    </div>
+</div>
